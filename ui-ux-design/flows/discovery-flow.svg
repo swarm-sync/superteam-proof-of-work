@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img" aria-labelledby="t d">
+<title id="t">Bounty discovery user flow</title>
+<desc id="d">A first-time contributor lands on Superteam Earn, filters and searches bounties, evaluates cards, opens a detail page, and either applies, saves, or returns. No-match and empty states are handled.</desc>
+<style>
+  .node{fill:#fff;stroke:#5B21B6;stroke-width:2;rx:10}
+  .node-decision{fill:#F3EFFF;stroke:#5B21B6;stroke-width:2}
+  .node-end{fill:#EAF7EF;stroke:#0E7C4A;stroke-width:2}
+  .node-fail{fill:#FEF3C7;stroke:#92400E;stroke-width:2}
+  text{font-family:Inter,system-ui,sans-serif;fill:#14161F}
+  .t{font-size:14px;font-weight:700}
+  .s{font-size:12px;fill:#4B5563}
+  .lbl{font-size:12px;fill:#5B21B6;font-weight:700}
+  .arr{stroke:#4B5563;stroke-width:2;fill:none;marker-end:url(#ah)}
+  .cap{font-size:20px;font-weight:800}
+</style>
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4B5563"/></marker></defs>
+<text x="24" y="34" class="cap">Discovery flow — first-time contributor</text>
+<text x="24" y="56" class="s">Earn bounty discovery redesign · each box is one screen or decision · arrows are the user&#8217;s path</text>
+
+<rect x="24" y="80" width="180" height="64" rx="10" class="node"/>
+<text x="114" y="107" text-anchor="middle" class="t">Land on Discover</text>
+<text x="114" y="126" text-anchor="middle" class="s">hero + skill pills</text>
+
+<rect x="264" y="80" width="180" height="64" rx="10" class="node"/>
+<text x="354" y="107" text-anchor="middle" class="t">Filter / search / sort</text>
+<text x="354" y="126" text-anchor="middle" class="s">skill · beginner · reward</text>
+
+<path d="M204 112 H264" class="arr"/>
+
+<rect x="504" y="80" width="180" height="64" rx="10" class="node-decision"/>
+<text x="594" y="107" text-anchor="middle" class="t">Any matches?</text>
+<text x="594" y="126" text-anchor="middle" class="s">results count announced</text>
+<path d="M444 112 H504" class="arr"/>
+
+<rect x="744" y="40" width="200" height="64" rx="10" class="node-fail"/>
+<text x="844" y="66" text-anchor="middle" class="t">No matches</text>
+<text x="844" y="85" text-anchor="middle" class="s">empty state + clear filters</text>
+<path d="M684 96 C 720 60, 720 72, 744 72" class="arr"/>
+<text x="700" y="52" class="lbl">no</text>
+
+<rect x="504" y="200" width="180" height="64" rx="10" class="node"/>
+<text x="594" y="227" text-anchor="middle" class="t">Scan bounty cards</text>
+<text x="594" y="246" text-anchor="middle" class="s">reward · split · days left · subs</text>
+<path d="M594 144 V200" class="arr"/>
+<text x="602" y="175" class="lbl">yes</text>
+
+<rect x="264" y="200" width="180" height="64" rx="10" class="node-decision"/>
+<text x="354" y="227" text-anchor="middle" class="t">A card fits?</text>
+<text x="354" y="246" text-anchor="middle" class="s">skill + time + reward</text>
+<path d="M504 232 H444" class="arr"/>
+
+<rect x="24" y="200" width="180" height="64" rx="10" class="node"/>
+<text x="114" y="227" text-anchor="middle" class="t">Save it (★)</text>
+<text x="114" y="246" text-anchor="middle" class="s">saved locally, persists</text>
+<path d="M264 216 C 230 200, 220 216, 204 228" class="arr"/>
+<text x="212" y="196" class="lbl">not yet</text>
+
+<rect x="264" y="320" width="180" height="64" rx="10" class="node"/>
+<text x="354" y="347" text-anchor="middle" class="t">Open bounty detail</text>
+<text x="354" y="366" text-anchor="middle" class="s">split · criteria · timeline</text>
+<path d="M354 264 V320" class="arr"/>
+<text x="362" y="295" class="lbl">yes</text>
+
+<rect x="504" y="320" width="180" height="64" rx="10" class="node-decision"/>
+<text x="594" y="347" text-anchor="middle" class="t">Worth applying?</text>
+<text x="594" y="366" text-anchor="middle" class="s">criteria clear? deadline OK?</text>
+<path d="M444 352 H504" class="arr"/>
+
+<rect x="744" y="320" width="200" height="64" rx="10" class="node"/>
+<text x="844" y="347" text-anchor="middle" class="t">Back to results</text>
+<text x="844" y="366" text-anchor="middle" class="s">Esc or back link</text>
+<path d="M684 336 C 720 336, 720 352, 744 352" class="arr"/>
+<text x="700" y="322" class="lbl">no</text>
+
+<rect x="504" y="440" width="180" height="64" rx="10" class="node-end"/>
+<text x="594" y="467" text-anchor="middle" class="t">Start application →</text>
+<text x="594" y="486" text-anchor="middle" class="s">see apply flow</text>
+<path d="M594 384 V440" class="arr"/>
+<text x="602" y="415" class="lbl">yes</text>
+
+<rect x="264" y="440" width="180" height="64" rx="10" class="node-end"/>
+<text x="354" y="467" text-anchor="middle" class="t">Saved for later</text>
+<text x="354" y="486" text-anchor="middle" class="s">return via saved list</text>
+<path d="M504 472 H444" class="arr"/>
+<text x="452" y="458" class="lbl">save &amp; leave</text>
+
+<text x="24" y="540" class="s">Design rule: every screen answers one question. Discover = “can I do this?” · Detail = “how do I win?” · Apply = “what do I send?”</text>
+</svg>

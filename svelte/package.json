@@ -1,0 +1,21 @@
+{
+  "description": "Accessible, mobile-first Solana bounty board built with Svelte + Vite (WCAG 2.1 AA, Core Web Vitals aware).",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^3.0.0"
+  },
+  "name": "solana-bounty-board-svelte",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "check": "svelte-check --threshold warning",
+    "dev": "vite",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}

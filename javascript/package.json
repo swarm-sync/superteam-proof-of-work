@@ -1,0 +1,1 @@
+{"description":"Dependency-free vanilla JavaScript (ES2023) utility library: data helpers, formatting, timing utilities and a tiny observable store.","engines":{"node":">=18"},"exports":{".":"./src/index.js"},"license":"MIT","main":"src/index.js","name":"toolkit","scripts":{"test":"node --test test/toolkit.test.js"},"type":"module","version":"1.0.0"}

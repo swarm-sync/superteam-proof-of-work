@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="t">
+<title id="t">Wireframe — Discover screen (low fidelity)</title>
+<style>
+  text{font-family:Inter,system-ui,sans-serif;fill:#444}
+  .b{fill:#fff;stroke:#999;stroke-width:1.5}
+  .g{fill:#e8e8e8;stroke:#999;stroke-width:1.5}
+  .h{fill:#ddd;stroke:#999;stroke-width:1.5}
+  .t{font-size:13px;font-weight:700}.s{font-size:11px;fill:#777}.cap{font-size:18px;font-weight:800;fill:#222}
+  .line{stroke:#bbb;stroke-width:1.5}
+</style>
+<text x="20" y="30" class="cap">WF-01 · Discover (low-fi) — structure only, no colour or brand</text>
+<!-- header -->
+<rect x="20" y="48" width="920" height="44" class="b"/><text x="36" y="76" class="t">LOGO</text>
+<rect x="140" y="60" width="70" height="20" class="g"/><rect x="220" y="60" width="70" height="20" class="g"/><rect x="300" y="60" width="70" height="20" class="g"/>
+<rect x="800" y="60" width="120" height="20" class="g"/>
+<!-- hero -->
+<text x="20" y="130" class="t" font-size="20">H1 — Find a bounty you can actually win.</text>
+<text x="20" y="152" class="s">Lede, max 640px: reward, deadline and “what good looks like” up front.</text>
+<rect x="20" y="168" width="90" height="26" rx="13" class="g"/><rect x="118" y="168" width="110" height="26" rx="13" class="g"/><rect x="236" y="168" width="90" height="26" rx="13" class="g"/><rect x="334" y="168" width="90" height="26" rx="13" class="g"/>
+<text x="20" y="212" class="s">↑ skill filter pills (toggle buttons) — 5 groups max, Hick’s law</text>
+<!-- toolbar -->
+<rect x="20" y="228" width="420" height="36" class="b"/><text x="32" y="251" class="s">Search input — bounties, sponsors, skills</text>
+<rect x="452" y="228" width="160" height="36" class="b"/><text x="464" y="251" class="s">Sort select</text>
+<rect x="624" y="228" width="200" height="36" class="b"/><text x="636" y="251" class="s">☐ First-timer friendly only</text>
+<text x="20" y="288" class="s">“6 bounties · UI/UX Design” — role=status, aria-live=polite</text>
+<!-- cards x3 -->
+<g>
+<rect x="20" y="300" width="293" height="280" class="b"/>
+<rect x="20" y="300" width="293" height="90" class="h"/><text x="32" y="348" class="s">thumb: sponsor · type</text>
+<rect x="32" y="404" width="110" height="18" class="g"/><text x="150" y="418" class="s">4 days left</text>
+<line x1="32" y1="436" x2="280" y2="436" class="line"/><line x1="32" y1="452" x2="240" y2="452" class="line"/>
+<text x="32" y="480" class="t">$2,500 USDC · split</text>
+<rect x="32" y="492" width="70" height="18" rx="9" class="g"/><rect x="110" y="492" width="70" height="18" rx="9" class="g"/>
+<line x1="20" y1="536" x2="313" y2="536" class="line"/>
+<text x="32" y="562" class="s">31 submissions</text><rect x="220" y="544" width="70" height="24" class="g"/><text x="232" y="561" class="s">☆ Save</text>
+</g>
+<g>
+<rect x="333" y="300" width="293" height="280" class="b"/>
+<rect x="333" y="300" width="293" height="90" class="h"/><text x="345" y="348" class="s">thumb: sponsor · type</text>
+<rect x="345" y="404" width="110" height="18" class="g"/><text x="463" y="418" class="s">7 days left</text>
+<line x1="345" y1="436" x2="593" y2="436" class="line"/><line x1="345" y1="452" x2="553" y2="452" class="line"/>
+<text x="345" y="480" class="t">$1,500 USDC · split</text>
+<rect x="345" y="492" width="70" height="18" rx="9" class="g"/><rect x="423" y="492" width="70" height="18" rx="9" class="g"/>
+<line x1="333" y1="536" x2="626" y2="536" class="line"/>
+<text x="345" y="562" class="s">23 submissions</text><rect x="533" y="544" width="70" height="24" class="g"/><text x="545" y="561" class="s">☆ Save</text>
+</g>
+<g>
+<rect x="646" y="300" width="294" height="280" class="b"/>
+<rect x="646" y="300" width="294" height="90" class="h"/><text x="658" y="348" class="s">thumb: sponsor · type</text>
+<rect x="658" y="404" width="110" height="18" class="g"/><text x="776" y="418" class="s">3 days left</text>
+<line x1="658" y1="436" x2="906" y2="436" class="line"/><line x1="658" y1="452" x2="866" y2="452" class="line"/>
+<text x="658" y="480" class="t">$1,200 USDC · split</text>
+<rect x="658" y="492" width="70" height="18" rx="9" class="g"/><rect x="736" y="492" width="70" height="18" rx="9" class="g"/>
+<line x1="646" y1="536" x2="940" y2="536" class="line"/>
+<text x="658" y="562" class="s">12 submissions</text><rect x="846" y="544" width="70" height="24" class="g"/><text x="858" y="561" class="s">☆ Save</text>
+</g>
+<text x="20" y="620" class="s">Annotations: card = thumb / badge row / title link / blurb / reward+split / skill chips / footer (subs + save). Grid: 3-col ≥960px, 2-col ≥640px, 1-col below.</text>
+</svg>

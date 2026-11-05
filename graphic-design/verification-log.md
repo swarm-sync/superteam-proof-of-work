@@ -1,0 +1,156 @@
+# Solforge brand kit — verification log
+
+- [PASS] SVG well-formed, viewBox=0 0 1024 1024: solforge-app-icon.svg
+- [PASS] SVG well-formed, viewBox=0 0 120 120: solforge-favicon.svg
+- [PASS] SVG well-formed, viewBox=0 0 510 140: solforge-logo-horizontal.svg
+- [PASS] SVG well-formed, viewBox=0 0 510 240: solforge-logo-monochrome.svg
+- [PASS] SVG well-formed, viewBox=0 0 510 240: solforge-logo-primary.svg
+- [PASS] SVG well-formed, viewBox=0 0 510 240: solforge-logo-reversed.svg
+- [PASS] SVG well-formed, viewBox=0 0 120 120: solforge-logo-symbol.svg
+- [PASS] SVG well-formed, viewBox=0 0 510 110: solforge-logo-wordmark.svg
+- [PASS] SVG well-formed, viewBox=0 0 1200 630: solforge-bounty-card.svg
+- [PASS] SVG well-formed, viewBox=0 0 1200 860: solforge-color-palette.svg
+- [PASS] SVG well-formed, viewBox=0 0 1080 1080: solforge-social-post.svg
+- [PASS] SVG well-formed, viewBox=0 0 1920 1080: solforge-title-slide.svg
+- [PASS] SVG well-formed, viewBox=0 0 1200 900: solforge-typography-specimen.svg
+- [PASS] SVG well-formed, viewBox=0 0 1500 500: solforge-x-banner.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-app-icon.svg
+- [PASS] logo master has no script/foreignObject: solforge-app-icon.svg
+- [PASS] logo master has xmlns: solforge-app-icon.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-favicon.svg
+- [PASS] logo master has no script/foreignObject: solforge-favicon.svg
+- [PASS] logo master has xmlns: solforge-favicon.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-horizontal.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-horizontal.svg
+- [PASS] logo master has xmlns: solforge-logo-horizontal.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-monochrome.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-monochrome.svg
+- [PASS] logo master has xmlns: solforge-logo-monochrome.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-primary.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-primary.svg
+- [PASS] logo master has xmlns: solforge-logo-primary.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-reversed.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-reversed.svg
+- [PASS] logo master has xmlns: solforge-logo-reversed.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-symbol.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-symbol.svg
+- [PASS] logo master has xmlns: solforge-logo-symbol.svg
+- [PASS] logo master has zero <text> elements (path-only letterforms): solforge-logo-wordmark.svg
+- [PASS] logo master has no script/foreignObject: solforge-logo-wordmark.svg
+- [PASS] logo master has xmlns: solforge-logo-wordmark.svg
+- [PASS] PNG magic bytes valid: logo-primary-light-1024.png (17789 bytes)
+- [PASS] PNG dimensions 1024x482 (expected 1024x482): logo-primary-light-1024.png
+- [PASS] PIL format PNG: logo-primary-light-1024.png
+- [PASS] PNG magic bytes valid: logo-primary-dark-1024.png (15783 bytes)
+- [PASS] PNG dimensions 1024x482 (expected 1024x482): logo-primary-dark-1024.png
+- [PASS] PIL format PNG: logo-primary-dark-1024.png
+- [PASS] PNG magic bytes valid: logo-horizontal-1024.png (15857 bytes)
+- [PASS] PNG dimensions 1024x281 (expected 1024x281): logo-horizontal-1024.png
+- [PASS] PIL format PNG: logo-horizontal-1024.png
+- [PASS] PNG magic bytes valid: logo-symbol-512.png (29580 bytes)
+- [PASS] PNG dimensions 512x512 (expected 512x512): logo-symbol-512.png
+- [PASS] PIL format PNG: logo-symbol-512.png
+- [PASS] PNG magic bytes valid: logo-symbol-256.png (12760 bytes)
+- [PASS] PNG dimensions 256x256 (expected 256x256): logo-symbol-256.png
+- [PASS] PIL format PNG: logo-symbol-256.png
+- [PASS] PNG magic bytes valid: logo-symbol-64.png (3158 bytes)
+- [PASS] PNG dimensions 64x64 (expected 64x64): logo-symbol-64.png
+- [PASS] PIL format PNG: logo-symbol-64.png
+- [PASS] PNG magic bytes valid: logo-symbol-32.png (1505 bytes)
+- [PASS] PNG dimensions 32x32 (expected 32x32): logo-symbol-32.png
+- [PASS] PIL format PNG: logo-symbol-32.png
+- [PASS] PNG magic bytes valid: logo-symbol-16.png (709 bytes)
+- [PASS] PNG dimensions 16x16 (expected 16x16): logo-symbol-16.png
+- [PASS] PIL format PNG: logo-symbol-16.png
+- [PASS] PNG magic bytes valid: logo-symbol-48.png (2295 bytes)
+- [PASS] PNG dimensions 48x48 (expected 48x48): logo-symbol-48.png
+- [PASS] PIL format PNG: logo-symbol-48.png
+- [PASS] PNG magic bytes valid: icon-512.png (28770 bytes)
+- [PASS] PNG dimensions 512x512 (expected 512x512): icon-512.png
+- [PASS] PIL format PNG: icon-512.png
+- [PASS] PNG magic bytes valid: icon-180.png (7494 bytes)
+- [PASS] PNG dimensions 180x180 (expected 180x180): icon-180.png
+- [PASS] PIL format PNG: icon-180.png
+- [PASS] PNG magic bytes valid: x-banner-1500x500.png (43106 bytes)
+- [PASS] PNG dimensions 1500x500 (expected 1500x500): x-banner-1500x500.png
+- [PASS] PIL format PNG: x-banner-1500x500.png
+- [PASS] PNG magic bytes valid: bounty-card-1200x630.png (91434 bytes)
+- [PASS] PNG dimensions 1200x630 (expected 1200x630): bounty-card-1200x630.png
+- [PASS] PIL format PNG: bounty-card-1200x630.png
+- [PASS] PNG magic bytes valid: title-slide-1920x1080.png (67347 bytes)
+- [PASS] PNG dimensions 1920x1080 (expected 1920x1080): title-slide-1920x1080.png
+- [PASS] PIL format PNG: title-slide-1920x1080.png
+- [PASS] PNG magic bytes valid: social-post-1080x1080.png (54668 bytes)
+- [PASS] PNG dimensions 1080x1080 (expected 1080x1080): social-post-1080x1080.png
+- [PASS] PIL format PNG: social-post-1080x1080.png
+- [PASS] PNG magic bytes valid: color-palette-1200x860.png (66586 bytes)
+- [PASS] PNG dimensions 1200x860 (expected 1200x860): color-palette-1200x860.png
+- [PASS] PIL format PNG: color-palette-1200x860.png
+- [PASS] PNG magic bytes valid: typography-1200x900.png (93743 bytes)
+- [PASS] PNG dimensions 1200x900 (expected 1200x900): typography-1200x900.png
+- [PASS] PIL format PNG: typography-1200x900.png
+- [PASS] transparent background (mode RGBA): logo-primary-light-1024.png
+- [PASS] transparent background (mode RGBA): logo-horizontal-1024.png
+- [PASS] transparent background (mode RGBA): logo-symbol-512.png
+- [PASS] ICO magic bytes valid: favicon.ico (705 bytes)
+- [PASS] PIL format ICO: favicon.ico, sizes available {(16, 16)}
+
+## WCAG contrast ratios (recomputed from hex values)
+- White on Forge Violet: **7.1:1** — AAA (needs 4.5:1)
+- [PASS] contrast White on Forge Violet = 7.1:1 >= 4.5:1 (AAA)
+- Forge Violet on Paper: **6.5:1** — AA (needs 4.5:1)
+- [PASS] contrast Forge Violet on Paper = 6.5:1 >= 4.5:1 (AA)
+- Ink on Paper: **16.6:1** — AAA (needs 4.5:1)
+- [PASS] contrast Ink on Paper = 16.6:1 >= 4.5:1 (AAA)
+- Pulse Mint on Midnight: **10.7:1** — AAA (needs 4.5:1)
+- [PASS] contrast Pulse Mint on Midnight = 10.7:1 >= 4.5:1 (AAA)
+- Solar Amber on Midnight: **10.7:1** — AAA (needs 4.5:1)
+- [PASS] contrast Solar Amber on Midnight = 10.7:1 >= 4.5:1 (AAA)
+- Slate on Midnight: **6.1:1** — AA (needs 4.5:1)
+- [PASS] contrast Slate on Midnight = 6.1:1 >= 4.5:1 (AA)
+- White on Deep Violet: **11.0:1** — AAA (needs 4.5:1)
+- [PASS] contrast White on Deep Violet = 11.0:1 >= 4.5:1 (AAA)
+- [PASS] SUBMISSION.md title is 71 chars (max 80)
+- [PASS] SUBMISSION.md carries the PUBLIC LINK TBD line
+
+## File inventory (bytes)
+- `README.md` — 5992 bytes
+- `SUBMISSION.md` — 818 bytes
+- `assets/solforge-bounty-card.svg` — 1565 bytes
+- `assets/solforge-color-palette.svg` — 5037 bytes
+- `assets/solforge-social-post.svg` — 1761 bytes
+- `assets/solforge-title-slide.svg` — 1408 bytes
+- `assets/solforge-typography-specimen.svg` — 2337 bytes
+- `assets/solforge-x-banner.svg` — 1587 bytes
+- `brand-preview.html` — 3683 bytes
+- `build.py` — 16656 bytes
+- `exports/bounty-card-1200x630.png` — 91434 bytes
+- `exports/color-palette-1200x860.png` — 66586 bytes
+- `exports/favicon.ico` — 705 bytes
+- `exports/icon-180.png` — 7494 bytes
+- `exports/icon-512.png` — 28770 bytes
+- `exports/logo-horizontal-1024.png` — 15857 bytes
+- `exports/logo-primary-dark-1024.png` — 15783 bytes
+- `exports/logo-primary-light-1024.png` — 17789 bytes
+- `exports/logo-symbol-16.png` — 709 bytes
+- `exports/logo-symbol-256.png` — 12760 bytes
+- `exports/logo-symbol-32.png` — 1505 bytes
+- `exports/logo-symbol-48.png` — 2295 bytes
+- `exports/logo-symbol-512.png` — 29580 bytes
+- `exports/logo-symbol-64.png` — 3158 bytes
+- `exports/social-post-1080x1080.png` — 54668 bytes
+- `exports/title-slide-1920x1080.png` — 67347 bytes
+- `exports/typography-1200x900.png` — 93743 bytes
+- `exports/x-banner-1500x500.png` — 43106 bytes
+- `guidelines/brand-guidelines.md` — 7381 bytes
+- `logos/solforge-app-icon.svg` — 839 bytes
+- `logos/solforge-favicon.svg` — 707 bytes
+- `logos/solforge-logo-horizontal.svg` — 3188 bytes
+- `logos/solforge-logo-monochrome.svg` — 3130 bytes
+- `logos/solforge-logo-primary.svg` — 3291 bytes
+- `logos/solforge-logo-reversed.svg` — 3126 bytes
+- `logos/solforge-logo-symbol.svg` — 711 bytes
+- `logos/solforge-logo-wordmark.svg` — 2594 bytes
+- **Total: 619100 bytes across 43 files**
+
+## Result: ALL CHECKS PASSED

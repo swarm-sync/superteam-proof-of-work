@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img" aria-labelledby="t d">
+<title id="t">Bounty application user flow</title>
+<desc id="d">Three-step application: profile, approach, review and submit. Each step validates inline and returns the user to the exact field on error. Success shows a reference number and the edit window.</desc>
+<style>
+  .node{fill:#fff;stroke:#5B21B6;stroke-width:2;rx:10}
+  .node-decision{fill:#F3EFFF;stroke:#5B21B6;stroke-width:2}
+  .node-end{fill:#EAF7EF;stroke:#0E7C4A;stroke-width:2}
+  .node-fail{fill:#FEF3C7;stroke:#92400E;stroke-width:2}
+  text{font-family:Inter,system-ui,sans-serif;fill:#14161F}
+  .t{font-size:14px;font-weight:700}
+  .s{font-size:12px;fill:#4B5563}
+  .lbl{font-size:12px;fill:#5B21B6;font-weight:700}
+  .arr{stroke:#4B5563;stroke-width:2;fill:none;marker-end:url(#ah)}
+  .cap{font-size:20px;font-weight:800}
+</style>
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4B5563"/></marker></defs>
+<text x="24" y="34" class="cap">Apply flow — 3 steps, one job per step</text>
+<text x="24" y="56" class="s">Bounty: “Redesign the bounty discovery experience” · $1,500 USDC · deadline 12 Nov 2026</text>
+
+<rect x="24" y="80" width="180" height="64" rx="10" class="node"/>
+<text x="114" y="107" text-anchor="middle" class="t">Step 1 · Your profile</text>
+<text x="114" y="126" text-anchor="middle" class="s">name · portfolio · wallet</text>
+
+<rect x="264" y="80" width="180" height="64" rx="10" class="node-decision"/>
+<text x="354" y="107" text-anchor="middle" class="t">Valid?</text>
+<text x="354" y="126" text-anchor="middle" class="s">https:// link · wallet 32–44 chars</text>
+<path d="M204 112 H264" class="arr"/>
+
+<rect x="504" y="40" width="200" height="64" rx="10" class="node-fail"/>
+<text x="604" y="66" text-anchor="middle" class="t">Inline error, same field</text>
+<text x="604" y="85" text-anchor="middle" class="s">aria-invalid + plain-language fix</text>
+<path d="M444 96 C 470 60, 480 72, 504 72" class="arr"/>
+<text x="452" y="52" class="lbl">no</text>
+
+<rect x="504" y="200" width="180" height="64" rx="10" class="node"/>
+<text x="594" y="227" text-anchor="middle" class="t">Step 2 · Your approach</text>
+<text x="594" y="246" text-anchor="middle" class="s">3–5 sentences · time · file link</text>
+<path d="M354 144 V200" class="arr" transform="translate(0,0)"/>
+<path d="M354 144 C 354 180, 594 170, 594 200" class="arr"/>
+<text x="362" y="175" class="lbl">yes</text>
+
+<rect x="264" y="200" width="180" height="64" rx="10" class="node-decision"/>
+<text x="354" y="227" text-anchor="middle" class="t">≥ 50 chars?</text>
+<text x="354" y="246" text-anchor="middle" class="s">approach is the submission</text>
+<path d="M504 232 H444" class="arr"/>
+
+<rect x="24" y="200" width="180" height="64" rx="10" class="node-fail"/>
+<text x="114" y="227" text-anchor="middle" class="t">Inline error</text>
+<text x="114" y="246" text-anchor="middle" class="s">“Write at least 50 characters”</text>
+<path d="M264 216 C 230 200, 220 216, 204 228" class="arr"/>
+<text x="212" y="196" class="lbl">no</text>
+
+<rect x="264" y="320" width="180" height="64" rx="10" class="node"/>
+<text x="354" y="347" text-anchor="middle" class="t">Step 3 · Review &amp; submit</text>
+<text x="354" y="366" text-anchor="middle" class="s">everything on one screen</text>
+<path d="M354 264 V320" class="arr"/>
+<text x="362" y="295" class="lbl">yes</text>
+
+<rect x="504" y="320" width="180" height="64" rx="10" class="node-decision"/>
+<text x="594" y="347" text-anchor="middle" class="t">Confirmed original?</text>
+<text x="594" y="366" text-anchor="middle" class="s">checkbox + criteria read</text>
+<path d="M444 352 H504" class="arr"/>
+
+<rect x="744" y="320" width="200" height="64" rx="10" class="node-fail"/>
+<text x="844" y="347" text-anchor="middle" class="t">“Please confirm”</text>
+<text x="844" y="366" text-anchor="middle" class="s">submit never disabled — explained</text>
+<path d="M684 336 C 720 336, 720 352, 744 352" class="arr"/>
+<text x="700" y="322" class="lbl">no</text>
+
+<rect x="504" y="440" width="180" height="64" rx="10" class="node-end"/>
+<text x="594" y="467" text-anchor="middle" class="t">Success 🎉</text>
+<text x="594" y="486" text-anchor="middle" class="s">reference ST-2481-0042</text>
+<path d="M594 384 V440" class="arr"/>
+<text x="602" y="415" class="lbl">yes</text>
+
+<rect x="264" y="440" width="180" height="64" rx="10" class="node-end"/>
+<text x="354" y="467" text-anchor="middle" class="t">Edit until deadline</text>
+<text x="354" y="486" text-anchor="middle" class="s">winners announced 17 Nov 2026</text>
+<path d="M504 472 H444" class="arr"/>
+
+<text x="24" y="540" class="s">Design rule: submit is never disabled — validation explains instead of blocking. Back is always available; nothing is lost between steps.</text>
+</svg>

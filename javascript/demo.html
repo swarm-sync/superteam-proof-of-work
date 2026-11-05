@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>toolkit — vanilla JS utility library demo</title>
+<style>
+  :root { color-scheme: light dark; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  body { max-width: 760px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 2rem; }
+  .card { border: 1px solid #8885; border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+  label { display: block; font-weight: 600; margin-bottom: .25rem; }
+  input, select, button { font: inherit; padding: .4rem .6rem; border-radius: 6px; border: 1px solid #888; }
+  button { cursor: pointer; }
+  output, pre { display: block; background: #8882; border-radius: 6px; padding: .6rem; margin-top: .5rem; white-space: pre-wrap; word-break: break-word; }
+  .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: end; }
+  .row > div { flex: 1 1 160px; }
+</style>
+</head>
+<body>
+<h1>toolkit — vanilla JS utility library</h1>
+<p>Dependency-free ES2023 helpers: data, formatting, timing, and a tiny observable store.
+Every panel below runs the real <code>src/index.js</code> in your browser. Open DevTools to inspect.</p>
+
+<section class="card" aria-labelledby="h-money">
+  <h2 id="h-money">Money &amp; date formatting</h2>
+  <div class="row">
+    <div><label for="amount">Amount</label><input id="amount" type="number" value="1234.5" step="0.01"></div>
+    <div><label for="currency">Currency</label>
+      <select id="currency"><option>USD</option><option>EUR</option><option>GBP</option></select>
+    </div>
+    <div><label for="date">Date</label><input id="date" type="date" value="2026-11-05"></div>
+  </div>
+  <output id="fmt-out" aria-live="polite"></output>
+</section>
+
+<section class="card" aria-labelledby="h-group">
+  <h2 id="h-group">groupBy &amp; sortBy</h2>
+  <p>Sample bounty rows grouped by status, sorted by reward (descending):</p>
+  <pre id="group-out"></pre>
+</section>
+
+<section class="card" aria-labelledby="h-debounce">
+  <h2 id="h-debounce">Debounce (live search)</h2>
+  <label for="search">Type to filter the list (300&nbsp;ms debounce)</label>
+  <input id="search" type="search" placeholder="e.g. solana" autocomplete="off">
+  <output id="search-out" aria-live="polite"></output>
+</section>
+
+<section class="card" aria-labelledby="h-store">
+  <h2 id="h-store">Observable store</h2>
+  <p>Counter state lives in <code>createStore</code>; the display updates via subscription.</p>
+  <div class="row">
+    <button id="inc" type="button">+1</button>
+    <button id="dec" type="button">−1</button>
+    <button id="reset" type="button">Reset</button>
+    <output id="count-out" aria-live="polite">count: 0</output>
+  </div>
+</section>
+
+<section class="card" aria-labelledby="h-clone">
+  <h2 id="h-clone">deepClone safety check</h2>
+  <button id="clone-btn" type="button">Clone, mutate the copy, compare</button>
+  <output id="clone-out" aria-live="polite"></output>
+</section>
+
+<script type="module">
+import { formatMoney, formatDate, groupBy, sortBy, debounce, deepClone, deepEqual, createStore } from './src/index.js';
+
+const $ = (id) => document.getElementById(id);
+
+// Money & date
+const renderFmt = () => {
+  try {
+    const money = formatMoney(Number($('amount').value), $('currency').value);
+    $('fmt-out').textContent = `${money}  •  ${formatDate($('date').value)}`;
+  } catch (err) { $('fmt-out').textContent = `Error: ${err.message}`; }
+};
+['amount', 'currency', 'date'].forEach((id) => $(id).addEventListener('input', renderFmt));
+renderFmt();
+
+// groupBy / sortBy
+const bounties = [
+  { title: 'Build a validator dashboard', status: 'open', reward: 800 },
+  { title: 'Write a Solana cookbook chapter', status: 'open', reward: 250 },
+  { title: 'Audit a staking program', status: 'review', reward: 1500 },
+  { title: 'Design bounty landing page', status: 'closed', reward: 400 },
+];
+$('group-out').textContent = JSON.stringify(
+  Object.fromEntries(Object.entries(groupBy(bounties, 'status'))
+    .map(([k, v]) => [k, sortBy(v, 'reward', { desc: true })])),
+  null, 2,
+);
+
+// Debounced search
+const items = ['Solana validator tooling', 'Anchor program audit', 'Solana cookbook', 'React dashboard', 'Rust CLI for Solana'];
+const renderSearch = debounce(() => {
+  const q = $('search').value.trim().toLowerCase();
+  const hits = q ? items.filter((i) => i.toLowerCase().includes(q)) : items;
+  $('search-out').textContent = hits.length ? hits.join('\n') : 'No matches.';
+}, 300);
+$('search').addEventListener('input', renderSearch);
+renderSearch.flush();
+
+// Observable store
+const store = createStore({ count: 0 });
+store.subscribe((next) => { $('count-out').textContent = `count: ${next.count}`; });
+$('inc').addEventListener('click', () => store.set((s) => ({ count: s.count + 1 })));
+$('dec').addEventListener('click', () => store.set((s) => ({ count: s.count - 1 })));
+$('reset').addEventListener('click', () => store.set({ count: 0 }));
+
+// deepClone
+$('clone-btn').addEventListener('click', () => {
+  const original = { nested: { value: 1 }, tags: ['a'] };
+  const copy = deepClone(original);
+  copy.nested.value = 99; copy.tags.push('b');
+  $('clone-out').textContent = `original unchanged: ${JSON.stringify(original)}\ncopy mutated: ${JSON.stringify(copy)}\ndeepEqual(original, copy): ${deepEqual(original, copy)}`;
+});
+</script>
+</body>
+</html>

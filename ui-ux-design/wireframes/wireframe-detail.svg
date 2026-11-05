@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="t">
+<title id="t">Wireframe — Bounty detail screen (low fidelity)</title>
+<style>
+  text{font-family:Inter,system-ui,sans-serif;fill:#444}
+  .b{fill:#fff;stroke:#999;stroke-width:1.5}
+  .g{fill:#e8e8e8;stroke:#999;stroke-width:1.5}
+  .t{font-size:13px;font-weight:700}.s{font-size:11px;fill:#777}.cap{font-size:18px;font-weight:800;fill:#222}
+  .line{stroke:#bbb;stroke-width:1.5}
+</style>
+<text x="20" y="30" class="cap">WF-02 · Bounty detail (low-fi)</text>
+<text x="20" y="56" class="s">← Back to all bounties</text>
+<!-- hero -->
+<rect x="20" y="68" width="920" height="180" class="b"/>
+<rect x="36" y="84" width="140" height="20" class="g"/><text x="184" y="99" class="s">badge: First-timer friendly</text>
+<text x="36" y="132" class="t" font-size="20">H1 — Bounty title</text>
+<text x="36" y="154" class="s">Sponsor · posted date · Global, remote · Listing #</text>
+<text x="36" y="186" class="t" font-size="16">$1,500 USDC · split $800 / $400 / $300</text>
+<rect x="36" y="200" width="120" height="34" class="g"/><rect x="164" y="200" width="120" height="34" class="g"/><rect x="292" y="200" width="120" height="34" class="g"/>
+<text x="36" y="220" class="s" transform="translate(0,0)">$800 1st</text><text x="164" y="220" class="s">$400 2nd</text><text x="292" y="220" class="s">$300 3rd</text>
+<!-- left column -->
+<rect x="20" y="268" width="600" height="180" class="b"/>
+<text x="36" y="296" class="t">The problem</text>
+<line x1="36" y1="312" x2="580" y2="312" class="line"/><line x1="36" y1="328" x2="540" y2="328" class="line"/><line x1="36" y1="344" x2="580" y2="344" class="line"/>
+<text x="36" y="380" class="t">What “good” looks like</text>
+<text x="36" y="402" class="s">• checklist item — judging criterion 1</text>
+<text x="36" y="420" class="s">• checklist item — judging criterion 2</text>
+<text x="36" y="438" class="s">• checklist item — judging criterion 3</text>
+<rect x="20" y="468" width="600" height="120" class="b"/>
+<text x="36" y="496" class="t">Timeline (key/value rows)</text>
+<text x="36" y="520" class="s">Submissions open — 28 Oct 2026 · Deadline — 12 Nov 2026, 23:59 UTC</text>
+<text x="36" y="542" class="s">Judging — 13–16 Nov · Winners announced — 17 Nov 2026</text>
+<!-- right rail -->
+<rect x="640" y="268" width="300" height="180" class="b"/>
+<text x="656" y="296" class="t">Sponsor card</text>
+<rect x="656" y="308" width="40" height="40" rx="20" class="g"/><text x="706" y="324" class="s">Sponsor name</text><text x="706" y="342" class="s">214 listings · 4.9★</text>
+<line x1="656" y1="362" x2="924" y2="362" class="line"/>
+<text x="656" y="384" class="s">Submissions so far — 23 · Median time — 2 days</text>
+<rect x="656" y="400" width="268" height="34" class="g"/><text x="760" y="422" class="t" text-anchor="middle">Start application →</text>
+<rect x="640" y="468" width="300" height="120" class="b"/>
+<text x="656" y="496" class="t">Before you apply</text>
+<text x="656" y="520" class="s">✓ Read the judging criteria</text>
+<text x="656" y="542" class="s">✓ Check the deadline in your timezone</text>
+<text x="656" y="564" class="s">✓ Edits allowed until the deadline</text>
+<text x="20" y="620" class="s">Annotations: reward split is a visual (3 boxes), not a sentence. Sponsor trust signals sit beside the CTA, not below the fold.</text>
+</svg>

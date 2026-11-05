@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earn Redesign — Bounty Discovery for First-Time Contributors</title>
+<meta name="description" content="Interactive UX prototype: a redesigned Superteam Earn bounty discovery experience for first-time contributors. Clickable, responsive, keyboard-navigable.">
+<style>
+/* ============ TOKENS (see design-system.md) ============ */
+:root{
+  --ink:#14161F; --ink-2:#4B5563; --surface:#FFFFFF; --surface-2:#F6F7FB;
+  --surface-3:#F3EFFF; --line:#E2E5EC; --line-strong:#C9CEDB;
+  --primary:#5B21B6; --primary-hover:#4C1D95; --primary-soft:#F3EFFF;
+  --accent:#0E7C4A; --accent-soft:#EAF7EF; --warn:#92400E; --warn-soft:#FEF3C7;
+  --danger:#B91C1C; --gold:#FFD166; --focus:#1D4ED8;
+  --radius:12px; --radius-sm:8px; --space-1:4px; --space-2:8px; --space-3:16px;
+  --space-4:24px; --space-5:32px; --space-6:48px; --max:1120px;
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(20,22,31,.06),0 4px 16px rgba(20,22,31,.08);
+}
+[data-theme="dark"]{
+  --ink:#F2F3F7; --ink-2:#A7AEC2; --surface:#0F111A; --surface-2:#171A26;
+  --surface-3:#1E1533; --line:#262B3A; --line-strong:#3A4156;
+  --primary:#A78BFA; --primary-hover:#C4B5FD; --primary-soft:#241B3D;
+  --accent:#34D399; --accent-soft:#0C2E21; --warn:#FBBF24; --warn-soft:#3A2A05;
+  --danger:#F87171; --focus:#93C5FD; --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.4);
+}
+/* Wireframe mode: same layout, low-fi grayscale — proves structure survives without color */
+[data-mode="wireframe"]{ --ink:#222; --ink-2:#555; --surface:#fff; --surface-2:#f2f2f2;
+  --surface-3:#eee; --line:#bbb; --line-strong:#999; --primary:#333; --primary-hover:#000;
+  --primary-soft:#eee; --accent:#333; --accent-soft:#eee; --warn:#333; --warn-soft:#eee;
+  --danger:#333; --gold:#ddd; --focus:#000; --shadow:none; }
+[data-mode="wireframe"] .card, [data-mode="wireframe"] .bounty-hero, [data-mode="wireframe"] .panel{ border:2px dashed var(--line-strong); }
+[data-mode="wireframe"] .avatar, [data-mode="wireframe"] .thumb{ background:#ddd !important; color:#555 !important; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{animation:none !important; transition:none !important} }
+body{margin:0;font-family:var(--font);background:var(--surface);color:var(--ink);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1{font-size:clamp(28px,4.5vw,40px);line-height:1.15;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:24px;line-height:1.25;margin:0 0 8px;letter-spacing:-.01em}
+h3{font-size:18px;line-height:1.3;margin:0 0 4px}
+p{margin:0 0 12px}
+a{color:var(--primary)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.skip-link{position:absolute;left:16px;top:-48px;z-index:100;background:var(--ink);color:var(--surface);
+  padding:10px 16px;border-radius:8px;text-decoration:none;transition:top .15s}
+.skip-link:focus{top:12px;color:var(--surface)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 16px}
+@media(min-width:768px){.wrap{padding:0 24px}}
+/* Header */
+header.top{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-inner{display:flex;align-items:center;gap:16px;min-height:60px}
+.logo{font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none;color:var(--ink);white-space:nowrap}
+.logo span{color:var(--primary)}
+nav.main{display:flex;gap:4px;margin-left:8px}
+nav.main a{padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--ink-2);font-weight:600;font-size:15px}
+nav.main a[aria-current="page"]{color:var(--primary);background:var(--primary-soft)}
+nav.main a:hover{color:var(--ink);background:var(--surface-2)}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;
+  padding:10px 18px;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none;
+  transition:background .15s,transform .05s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn-primary{color:#14161F}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-small{padding:7px 12px;font-size:14px;border-radius:8px}
+.toggle{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);
+  border-radius:8px;padding:7px 10px;font-size:13px;font-weight:600}
+.toggle[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+/* Screens */
+.screen{display:none}
+.screen.active{display:block}
+.hero{padding:var(--space-6) 0 var(--space-4)}
+.hero p.lede{font-size:18px;color:var(--ink-2);max-width:640px}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.pill{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;
+  padding:6px 14px;font-size:14px;font-weight:600;color:var(--ink)}
+.pill[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+[data-theme="dark"] .pill[aria-pressed="true"]{color:#14161F}
+.pill:hover{border-color:var(--primary)}
+/* Toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0 20px}
+.search{flex:1 1 260px;display:flex;align-items:center;gap:8px;border:1px solid var(--line-strong);
+  border-radius:10px;padding:0 12px;background:var(--surface)}
+.search input{flex:1;border:0;background:transparent;color:var(--ink);font:inherit;padding:11px 0;outline:none}
+.search input::placeholder{color:var(--ink-2)}
+select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);
+  border-radius:10px;padding:10px 12px}
+.results-note{font-size:14px;color:var(--ink-2);margin:0 0 16px}
+/* Cards */
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;text-align:left;padding:0;width:100%}
+.card:hover{border-color:var(--primary)}
+.card-body{padding:16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.thumb{width:100%;height:120px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;color:#fff}
+.tag{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;background:var(--primary-soft);color:var(--primary);white-space:nowrap}
+.tag.green{background:var(--accent-soft);color:var(--accent)}
+.tag.amber{background:var(--warn-soft);color:var(--warn)}
+.reward{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.reward small{font-size:13px;font-weight:600;color:var(--ink-2)}
+.meta{font-size:14px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:999px;padding:3px 9px}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;
+  border-top:1px solid var(--line);padding:12px 16px}
+.save-btn{border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;
+  padding:6px 10px;font-size:13px;font-weight:600;color:var(--ink)}
+.save-btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.empty{padding:48px 16px;text-align:center;color:var(--ink-2);border:1px dashed var(--line-strong);border-radius:var(--radius)}
+/* Detail */
+.back{margin:24px 0 0}
+.bounty-hero{border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin:16px 0 24px;
+  background:var(--surface-2)}
+.bounty-hero .reward{font-size:32px}
+.split{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.split div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.split b{display:block;font-size:18px}
+.split span{font-size:13px;color:var(--ink-2)}
+.two-col{display:grid;gap:24px;grid-template-columns:1fr}
+@media(min-width:860px){.two-col{grid-template-columns:1fr 320px}}
+.panel{border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:20px;background:var(--surface)}
+.panel h3{margin-bottom:12px}
+.panel ul{margin:0;padding-left:20px}
+.panel li{margin-bottom:6px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--ink-2)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+[data-theme="dark"] .avatar{color:#14161F}
+.sponsor{display:flex;gap:12px;align-items:center}
+/* Apply form */
+.steps{display:flex;gap:0;margin:24px 0;list-style:none;padding:0}
+.steps li{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--ink-2);
+  border-top:3px solid var(--line);padding-top:8px}
+.steps li[aria-current="step"]{color:var(--primary);border-top-color:var(--primary)}
+.steps li.done{color:var(--accent);border-top-color:var(--accent)}
+form.apply label{display:block;font-weight:700;font-size:15px;margin:16px 0 6px}
+form.apply input[type=text],form.apply input[type=url],form.apply textarea,form.apply select{
+  width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line-strong);
+  border-radius:10px;padding:11px 12px}
+form.apply textarea{min-height:120px;resize:vertical}
+form.apply input[aria-invalid="true"],form.apply textarea[aria-invalid="true"]{border-color:var(--danger)}
+.hint{font-size:13.5px;color:var(--ink-2);font-weight:400;margin-top:4px}
+.error{font-size:13.5px;color:var(--danger);font-weight:600;margin-top:4px;display:none}
+.error.show{display:block}
+.form-nav{display:flex;justify-content:space-between;gap:12px;margin-top:28px}
+.checklist{list-style:none;padding:0;margin:8px 0}
+.checklist li{padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--line)}
+.checklist li::before{content:"✓";position:absolute;left:4px;color:var(--accent);font-weight:800}
+.success{text-align:center;padding:48px 16px}
+.success .big{font-size:56px;line-height:1}
+footer{border-top:1px solid var(--line);margin-top:64px;padding:32px 0;color:var(--ink-2);font-size:14px}
+footer a{color:var(--ink-2)}
+@media(max-width:640px){
+  nav.main a{padding:8px 8px;font-size:14px}
+  .top-actions .btn span{display:none}
+  .split{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="logo" href="#/discover" data-nav>Superteam<span>Earn</span> <span style="font-weight:600;color:var(--ink-2);font-size:13px">· redesign concept</span></a>
+    <nav class="main" aria-label="Primary">
+      <a href="#/discover" data-nav aria-current="page">Discover</a>
+      <a href="#/bounty/earn-redesign" data-nav>Bounty detail</a>
+      <a href="#/apply" data-nav>Apply</a>
+    </nav>
+    <div class="top-actions">
+      <button class="toggle" id="modeToggle" aria-pressed="false" title="Toggle wireframe / high-fidelity view">Wireframe</button>
+      <button class="toggle" id="themeToggle" aria-pressed="false" title="Toggle dark mode">Dark</button>
+      <a class="btn btn-primary btn-small" href="#/apply" data-nav><span>Start an application</span>→</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+<!-- ================= DISCOVER ================= -->
+<section class="screen active" id="screen-discover" aria-labelledby="discover-h">
+  <div class="hero">
+    <h1 id="discover-h">Find a bounty you can actually win.</h1>
+    <p class="lede">Bounties matched to your skills, with the reward, the deadline, and what “good” looks like — before you spend an hour on a submission.</p>
+    <div class="pill-row" role="group" aria-label="Filter by skill">
+      <button class="pill" aria-pressed="true" data-skill="all">All skills</button>
+      <button class="pill" aria-pressed="false" data-skill="UI/UX Design">UI/UX Design</button>
+      <button class="pill" aria-pressed="false" data-skill="Frontend">Frontend</button>
+      <button class="pill" aria-pressed="false" data-skill="Content">Content</button>
+      <button class="pill" aria-pressed="false" data-skill="Research">Research</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <label class="search"><span aria-hidden="true">🔍</span><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search bounties</span>
+      <input type="search" id="searchInput" placeholder="Search bounties, sponsors, skills…" aria-label="Search bounties"></label>
+    <label for="sortSelect" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Sort bounties</label>
+    <select id="sortSelect" aria-label="Sort bounties">
+      <option value="deadline">Soonest deadline</option>
+      <option value="reward">Highest reward</option>
+      <option value="fewest">Fewest submissions</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:6px;font-weight:600;font-size:14px">
+      <input type="checkbox" id="beginnerOnly"> First-timer friendly only</label>
+  </div>
+  <p class="results-note" id="resultsNote" role="status" aria-live="polite"></p>
+  <div class="grid" id="bountyGrid"></div>
+  <div class="empty" id="emptyState" hidden>
+    <h2>No bounties match those filters</h2>
+    <p>Try clearing the search or turning off “first-timer friendly only”.</p>
+    <button class="btn btn-ghost" id="clearFilters">Clear all filters</button>
+  </div>
+</section>
+
+<!-- ================= DETAIL ================= -->
+<section class="screen" id="screen-detail" aria-labelledby="detail-h">
+  <p class="back"><a href="#/discover" data-nav>← Back to all bounties</a></p>
+  <div class="bounty-hero">
+    <span class="tag green">First-timer friendly</span>
+    <h1 id="detail-h" style="margin-top:12px">Redesign the bounty discovery experience</h1>
+    <p class="meta">Sponsored by Superteam · Posted 28 Oct 2026 · Global, remote · Listing #ST-2481</p>
+    <p class="reward">$1,500 <small>USDC · split $800 / $400 / $300 across 1st, 2nd, 3rd</small></p>
+    <div class="split" role="list" aria-label="Reward split">
+      <div role="listitem"><b>$800</b><span>1st place</span></div>
+      <div role="listitem"><b>$400</b><span>2nd place</span></div>
+      <div role="listitem"><b>$300</b><span>3rd place</span></div>
+    </div>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="panel"><h3>The problem</h3>
+        <p>New contributors land on a wall of 200+ listings with no way to tell which ones fit them. 61% of first-time visitors in our research never opened a single bounty. This listing asks you to fix that — for real, on the live product.</p>
+        <h3>What “good” looks like</h3>
+        <ul>
+          <li>A first-time contributor finds a matching bounty in under 60 seconds.</li>
+          <li>Every listing shows reward, deadline, judging criteria and expected effort up front.</li>
+          <li>Filters that match how people actually choose: skill, time available, reward, region.</li>
+          <li>Designs ship as a clickable prototype, not static screenshots.</li>
+        </ul>
+        <h3>Deliverables</h3>
+        <ul>
+          <li>Clickable prototype (desktop + mobile) of the redesigned discovery flow.</li>
+          <li>Design rationale: 1 page per major decision, with the trade-off stated.</li>
+          <li>Accessibility notes: keyboard path, contrast, focus order, reduced motion.</li>
+        </ul>
+      </div>
+      <div class="panel"><h3>Timeline</h3>
+        <div class="kv"><span>Submissions open</span><b>28 Oct 2026</b></div>
+        <div class="kv"><span>Deadline</span><b>12 Nov 2026, 23:59 UTC</b></div>
+        <div class="kv"><span>Judging</span><b>13–16 Nov 2026</b></div>
+        <div class="kv"><span>Winners announced</span><b>17 Nov 2026</b></div>
+      </div>
+    </div>
+    <aside aria-label="About this bounty">
+      <div class="panel">
+        <div class="sponsor"><span class="avatar" aria-hidden="true">ST</span>
+          <div><b>Superteam</b><br><span class="meta">Sponsor · 214 listings · 4.9★ sponsor rating</span></div></div>
+        <div style="height:16px"></div>
+        <div class="kv"><span>Submissions so far</span><b>23</b></div>
+        <div class="kv"><span>Median time to submit</span><b>2 days</b></div>
+        <div class="kv"><span>Skills</span><b>UI/UX Design, Research</b></div>
+        <div class="kv"><span>Region</span><b>Global</b></div>
+        <div style="height:16px"></div>
+        <a class="btn btn-primary" style="width:100%" href="#/apply" data-nav>Start application →</a>
+        <p class="hint" style="text-align:center">Takes about 10 minutes. Save and finish later.</p>
+      </div>
+      <div class="panel"><h3>Before you apply</h3>
+        <ul class="checklist">
+          <li>Read the judging criteria — they are the brief.</li>
+          <li>Check the deadline in your own timezone.</li>
+          <li>One submission per person; edits allowed until the deadline.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= APPLY ================= -->
+<section class="screen" id="screen-apply" aria-labelledby="apply-h">
+  <div style="max-width:680px;margin:0 auto;padding-bottom:48px">
+    <p class="back"><a href="#/bounty/earn-redesign" data-nav>← Back to bounty</a></p>
+    <h1 id="apply-h">Apply: Redesign the bounty discovery experience</h1>
+    <p class="meta">Step <span id="stepNow">1</span> of 3 · $1,500 USDC · Deadline 12 Nov 2026</p>
+    <ol class="steps" id="stepsList">
+      <li aria-current="step">1 · Your profile</li>
+      <li>2 · Your approach</li>
+      <li>3 · Review &amp; submit</li>
+    </ol>
+    <form class="apply" id="applyForm" novalidate>
+      <div data-step="1">
+        <label for="f-name">Full name
+          <input type="text" id="f-name" autocomplete="name" required>
+          <span class="error" id="e-name">Enter your name so the sponsor knows who you are.</span></label>
+        <label for="f-portfolio">Portfolio or profile link
+          <input type="url" id="f-portfolio" placeholder="https://your-portfolio.example" inputmode="url" required>
+          <span class="hint">A portfolio, Dribbble/Behance, or your Superteam profile. Must start with https://</span>
+          <span class="error" id="e-portfolio">Add a valid link starting with https://</span></label>
+        <label for="f-wallet">Solana wallet address (for payout)
+          <input type="text" id="f-wallet" placeholder="e.g. 7xK…9fQ2" inputmode="text" required>
+          <span class="hint">Payouts go to this address in USDC. Double-check it — payouts can’t be reversed.</span>
+          <span class="error" id="e-wallet">Enter a wallet address (32–44 characters).</span></label>
+      </div>
+      <div data-step="2" hidden>
+        <label for="f-approach">Your approach (in 3–5 sentences)
+          <textarea id="f-approach" required maxlength="1200" aria-describedby="approachCount"></textarea>
+          <span class="hint" id="approachCount">0 / 1200 characters. Say what you’d change first, and why.</span>
+          <span class="error" id="e-approach">Write at least 50 characters about your approach.</span></label>
+        <label for="f-time">Time you can commit this week
+          <select id="f-time"><option>Under 5 hours</option><option selected>5–10 hours</option><option>10–20 hours</option><option>Full-time</option></select></label>
+        <label for="f-file">Submission file (optional for now)
+          <input type="text" id="f-file" placeholder="Link to Figma, PDF, or prototype">
+          <span class="hint">You can add the final file any time before the deadline.</span></label>
+      </div>
+      <div data-step="3" hidden>
+        <h2>Review before you submit</h2>
+        <div class="panel" id="reviewBox" aria-live="polite"></div>
+        <label style="display:flex;gap:10px;align-items:flex-start;font-weight:600">
+          <input type="checkbox" id="f-confirm" style="margin-top:4px">
+          I confirm this is my own original work and I’ve read the judging criteria.</label>
+        <span class="error" id="e-confirm">Please confirm before submitting.</span>
+      </div>
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" id="prevBtn" hidden>← Back</button>
+        <span></span>
+        <button type="button" class="btn btn-primary" id="nextBtn">Continue →</button>
+      </div>
+    </form>
+    <div class="success" id="successBox" hidden tabindex="-1">
+      <div class="big" aria-hidden="true">🎉</div>
+      <h2>Application submitted</h2>
+      <p>Your submission for <b>“Redesign the bounty discovery experience”</b> is in. Reference <b>ST-2481-0042</b>.</p>
+      <p class="meta">Winners announced 17 Nov 2026. You can edit your submission until the 12 Nov deadline.</p>
+      <a class="btn btn-primary" href="#/discover" data-nav>Browse more bounties</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Design concept prototype</b> — built for the Superteam Earn bounty-discovery redesign case study (Nov 2026). Not affiliated with Superteam; bounty data is illustrative, modelled on real Earn listings. Palette, type scale and components: see <a href="../design-system.md">design-system.md</a>. Accessibility notes: see <a href="../accessibility.md">accessibility.md</a>.</p>
+    <p>Keyboard: Tab / Shift+Tab to move · Enter to open · Esc closes dialogs · all filters are real buttons.</p>
+  </div>
+</footer>
+<script>
+/* ============ DATA — illustrative listings modelled on real Earn bounties ============ */
+const BOUNTIES=[
+ {id:"jito-landing",title:"Design a landing page for a Solana liquid-staking dashboard",sponsor:"Jito",reward:2500,split:"$1,500 / $600 / $400",skills:["UI/UX Design"],type:"Design",days:4,subs:31,beginner:true,color:"#5B21B6",blurb:"A conversion-focused landing page for a new liquid-staking dashboard. Desktop + mobile."},
+ {id:"depin-onboarding",title:"Build a wallet-connect onboarding flow for a DePIN mapping app",sponsor:"Hivemapper",reward:4000,split:"$2,500 / $1,000 / $500",skills:["UI/UX Design","Frontend"],type:"Design + Build",days:6,subs:18,beginner:false,color:"#0E7C4A",blurb:"First-run flow that takes a new user from install to first mapped drive in under 3 minutes."},
+ {id:"earn-redesign",title:"Redesign the bounty discovery experience",sponsor:"Superteam",reward:1500,split:"$800 / $400 / $300",skills:["UI/UX Design","Research"],type:"UX Redesign",days:7,subs:23,beginner:true,color:"#7C3AED",blurb:"First-time contributors can't tell which bounties fit them. Fix discovery — for real, on the live product.",featured:true},
+ {id:"validator-explainer",title:"Create an illustrated explainer series for Solana validators",sponsor:"Solana Foundation",reward:3000,split:"$2,000 / $700 / $300",skills:["Content"],type:"Content",days:9,subs:42,beginner:false,color:"#B45309",blurb:"Three illustrated explainers: how validators order transactions, staking, and slashing — for non-technical readers."},
+ {id:"nft-checkout-audit",title:"UX audit of a Solana NFT marketplace checkout",sponsor:"Tensor",reward:1200,split:"$800 / $400",skills:["Research","UI/UX Design"],type:"UX Audit",days:3,subs:12,beginner:true,color:"#0F766E",blurb:"Heuristic audit of the full checkout: wallet connect, listing, bidding, settlement. Report + top 10 fixes."},
+ {id:"payments-empty-states",title:"Design empty states & error flows for a Solana payments app",sponsor:"Sphere",reward:800,split:"$500 / $300",skills:["UI/UX Design"],type:"Product Design",days:5,subs:9,beginner:true,color:"#BE185D",blurb:"Empty, loading, and error states for send/receive, plus copy that doesn't scare first-time users."}
+];
+const saved=new Set(JSON.parse(localStorage.getItem("earn-saved")||"[]"));
+let skill="all", query="", sortBy="deadline", beginnerOnly=false;
+
+/* ============ ROUTER (hash-based, so Back works) ============ */
+const screens={discover:"screen-discover",detail:"screen-detail",apply:"screen-apply"};
+function route(){
+  const h=location.hash.replace(/^#\/?/,"")||"discover";
+  const page=h.startsWith("bounty/")?"detail":(h==="apply"?"apply":"discover");
+  Object.values(screens).forEach(id=>document.getElementById(id).classList.remove("active"));
+  document.getElementById(screens[page]).classList.add("active");
+  document.querySelectorAll("nav.main a").forEach(a=>{
+    const target=a.getAttribute("href").replace(/^#\/?/,"");
+    const cur=page==="detail"?"bounty/earn-redesign":page;
+    if(target===cur||(page==="discover"&&target==="discover"))a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current");
+  });
+  document.getElementById("main").focus?.();
+  window.scrollTo(0,0);
+  const active=document.querySelector(".screen.active h1");
+  if(active)active.setAttribute("tabindex","-1"),active.focus({preventScroll:true});
+}
+window.addEventListener("hashchange",route);
+
+/* ============ DISCOVER: render + filters ============ */
+const grid=document.getElementById("bountyGrid"), note=document.getElementById("resultsNote"),
+      empty=document.getElementById("emptyState");
+function money(n){return "$"+n.toLocaleString("en-US")}
+function render(){
+  let list=BOUNTIES.filter(b=>(skill==="all"||b.skills.includes(skill)))
+    .filter(b=>!beginnerOnly||b.beginner)
+    .filter(b=>!query||(b.title+" "+b.sponsor+" "+b.skills.join(" ")).toLowerCase().includes(query));
+  list=[...list].sort((a,b)=>sortBy==="reward"?b.reward-a.reward:sortBy==="fewest"?a.subs-b.subs:a.days-b.days);
+  grid.innerHTML="";
+  list.forEach(b=>{
+    const el=document.createElement("article"); el.className="card";
+    el.innerHTML=`
+      <div class="thumb" style="background:${b.color}" aria-hidden="true">${b.sponsor} · ${b.type}</div>
+      <div class="card-body">
+        <div class="card-top"><span class="tag${b.beginner?" green":""}">${b.beginner?"First-timer friendly":"Experienced"}</span>
+        <span class="meta">${b.days} day${b.days===1?"":"s"} left</span></div>
+        <h3><a href="#/bounty/${b.id}" data-nav style="color:inherit;text-decoration:none">${b.title}</a></h3>
+        <p class="meta">${b.blurb}</p>
+        <p class="reward">${money(b.reward)} <small>USDC · ${b.split}</small></p>
+        <div class="chips">${b.skills.map(s=>`<span class="chip">${s}</span>`).join("")}<span class="chip">${b.sponsor}</span></div>
+      </div>
+      <div class="card-foot"><span class="meta">${b.subs} submissions</span>
+        <button class="save-btn" aria-pressed="${saved.has(b.id)}" data-save="${b.id}">${saved.has(b.id)?"★ Saved":"☆ Save"}</button>
+      </div>`;
+    grid.appendChild(el);
+  });
+  empty.hidden=list.length>0;
+  note.textContent=list.length?`${list.length} ${list.length===1?"bounty":"bounties"}${skill!=="all"?` · ${skill}`:""}${beginnerOnly?" · first-timer friendly":""}${query?` · matching “${query}”`:""}`:"";
+  if(!list.length)note.textContent="0 bounties match.";
+}
+document.querySelectorAll("[data-skill]").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll("[data-skill]").forEach(b=>b.setAttribute("aria-pressed","false"));
+  btn.setAttribute("aria-pressed","true"); skill=btn.dataset.skill; render();
+}));
+document.getElementById("searchInput").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render();});
+document.getElementById("sortSelect").addEventListener("change",e=>{sortBy=e.target.value;render();});
+document.getElementById("beginnerOnly").addEventListener("change",e=>{beginnerOnly=e.target.checked;render();});
+document.getElementById("clearFilters").addEventListener("click",()=>{
+  skill="all";query="";beginnerOnly=false;sortBy="deadline";
+  document.getElementById("searchInput").value="";document.getElementById("sortSelect").value="deadline";
+  document.getElementById("beginnerOnly").checked=false;
+  document.querySelectorAll("[data-skill]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.skill==="all"?"true":"false"));
+  render();document.getElementById("searchInput").focus();
+});
+grid.addEventListener("click",e=>{
+  const btn=e.target.closest("[data-save]"); if(!btn)return;
+  const id=btn.dataset.save;
+  saved.has(id)?saved.delete(id):saved.add(id);
+  localStorage.setItem("earn-saved",JSON.stringify([...saved]));
+  btn.setAttribute("aria-pressed",saved.has(id)); btn.textContent=saved.has(id)?"★ Saved":"☆ Save";
+});
+/* Detail page: deep-linking to any bounty shows its title in the hero (detail body is the featured listing) */
+document.querySelectorAll("[data-nav]").forEach(a=>a.addEventListener("click",()=>{
+  const m=a.getAttribute("href").match(/#\/bounty\/(.+)/);
+  if(m){const b=BOUNTIES.find(x=>x.id===m[1]);
+    if(b){document.getElementById("detail-h").textContent=b.title;
+      document.querySelector("#screen-detail .reward").innerHTML=`${money(b.reward)} <small>USDC · split ${b.split}</small>`;
+      document.querySelector("#screen-detail .meta").textContent=`Sponsored by ${b.sponsor} · Global, remote · ${b.subs} submissions so far`;
+    }}
+}));
+
+/* ============ APPLY: 3-step form with validation ============ */
+let step=1; const form=document.getElementById("applyForm");
+const stepsList=document.getElementById("stepsList").children;
+function showStep(n){
+  step=n;
+  document.getElementById("stepNow").textContent=n;
+  form.querySelectorAll("[data-step]").forEach(d=>d.hidden=+d.dataset.step!==n);
+  [...stepsList].forEach((li,i)=>{
+    li.classList.toggle("done",i+1<n);
+    if(i+1===n)li.setAttribute("aria-current","step"); else li.removeAttribute("aria-current");
+  });
+  document.getElementById("prevBtn").hidden=n===1;
+  document.getElementById("nextBtn").textContent=n===3?"Submit application":"Continue →";
+  if(n===3)buildReview();
+  const first=form.querySelector(`[data-step="${n}"] input, [data-step="${n}"] textarea, [data-step="${n}"] select`);
+  if(first)first.focus();
+}
+function setErr(id,field,bad){document.getElementById(id).classList.toggle("show",bad);field.setAttribute("aria-invalid",bad);return !bad;}
+function validStep(n){
+  if(n===1){
+    const name=document.getElementById("f-name"),pf=document.getElementById("f-portfolio"),w=document.getElementById("f-wallet");
+    return setErr("e-name",name,!name.value.trim())
+      & setErr("e-portfolio",pf,!/^https:\/\/.+\..+/.test(pf.value.trim()))
+      & setErr("e-wallet",w,w.value.trim().length<32||w.value.trim().length>44);
+  }
+  if(n===2){
+    const a=document.getElementById("f-approach");
+    return setErr("e-approach",a,a.value.trim().length<50);
+  }
+  const c=document.getElementById("f-confirm");
+  return setErr("e-confirm",c,!c.checked);
+}
+function buildReview(){
+  const v=id=>document.getElementById(id).value.trim()||"—";
+  document.getElementById("reviewBox").innerHTML=`
+    <div class="kv"><span>Name</span><b>${v("f-name")}</b></div>
+    <div class="kv"><span>Portfolio</span><b>${v("f-portfolio")}</b></div>
+    <div class="kv"><span>Wallet (payout)</span><b>${v("f-wallet")}</b></div>
+    <div class="kv"><span>Time this week</span><b>${v("f-time")}</b></div>
+    <div class="kv"><span>Approach</span><b>${v("f-approach").slice(0,140)}${v("f-approach").length>140?"…":""}</b></div>`;
+}
+document.getElementById("nextBtn").addEventListener("click",()=>{
+  if(step<3){if(validStep(step))showStep(step+1);}
+  else if(validStep(3)){
+    form.hidden=true;document.getElementById("stepsList").hidden=true;
+    const s=document.getElementById("successBox");s.hidden=false;s.focus();
+  }
+});
+document.getElementById("prevBtn").addEventListener("click",()=>{if(step>1)showStep(step-1);});
+document.getElementById("f-approach").addEventListener("input",e=>{
+  document.getElementById("approachCount").textContent=`${e.target.value.length} / 1200 characters. Say what you’d change first, and why.`;
+});
+/* Reset apply screen when navigating back to it */
+window.addEventListener("hashchange",()=>{if(location.hash.includes("apply")){form.hidden=false;document.getElementById("stepsList").hidden=false;document.getElementById("successBox").hidden=true;showStep(1);}});
+
+/* ============ TOGGLES ============ */
+const modeBtn=document.getElementById("modeToggle"), themeBtn=document.getElementById("themeToggle");
+modeBtn.addEventListener("click",()=>{
+  const wf=document.documentElement.dataset.mode==="wireframe";
+  document.documentElement.dataset.mode=wf?"":"wireframe";
+  modeBtn.setAttribute("aria-pressed",!wf); modeBtn.textContent=wf?"Wireframe":"High-fidelity";
+});
+themeBtn.addEventListener("click",()=>{
+  const dark=document.documentElement.dataset.theme==="dark";
+  document.documentElement.dataset.theme=dark?"":"dark";
+  themeBtn.setAttribute("aria-pressed",!dark); themeBtn.textContent=dark?"Dark":"Light";
+});
+/* Esc: return from detail/apply to Discover */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&location.hash!=="#/discover"&&location.hash!==""){location.hash="#/discover";}
+});
+render(); route();
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: Bounty Listings API
+  version: 1.0.0
+  description: >
+    Production-grade REST API for bounty listings (the Superteam Earn model):
+    sponsors post bounties, builders apply. JWT auth, schema validation,
+    rate limiting, pagination/filtering, typed errors. Schemas mirror
+    src/schemas.js exactly — if they drift, the contract is wrong.
+servers:
+  - url: http://127.0.0.1:3000
+    description: Local development
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  uptimeSeconds: { type: integer }
+  /auth/register:
+    post:
+      summary: Register a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterBody' }
+      responses:
+        '201': { description: Created — returns user and JWT, $ref: '#/components/schemas/AuthResponse' }
+        '409': { description: Email already registered, $ref: '#/components/schemas/Error' }
+        '422': { description: Validation failed, $ref: '#/components/schemas/Error' }
+  /auth/login:
+    post:
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginBody' }
+      responses:
+        '200': { description: OK — returns user and JWT, $ref: '#/components/schemas/AuthResponse' }
+        '401': { description: Invalid email or password (same message for unknown email), $ref: '#/components/schemas/Error' }
+        '422': { description: Validation failed, $ref: '#/components/schemas/Error' }
+  /bounties:
+    get:
+      summary: List bounties (public, paginated + filtered)
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [open, in_progress, closed, cancelled] } }
+        - { name: skill, in: query, schema: { type: string, enum: [Javascript, Typescript, React, Svelte, Vue, Python, SolidJS, Rust, Go] } }
+        - { name: minReward, in: query, schema: { type: integer, minimum: 1 } }
+        - { name: maxReward, in: query, schema: { type: integer, minimum: 1 } }
+        - { name: search, in: query, schema: { type: string } }
+        - { name: sort, in: query, schema: { type: string, enum: [created_at, reward_usd, title], default: created_at } }
+        - { name: order, in: query, schema: { type: string, enum: [asc, desc], default: desc } }
+        - { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+        - { name: pageSize, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 20 } }
+      responses:
+        '200': { description: Page of bounties with meta, $ref: '#/components/schemas/BountyPage' }
+        '400': { description: minReward > maxReward, $ref: '#/components/schemas/Error' }
+        '422': { description: Invalid query value, $ref: '#/components/schemas/Error' }
+    post:
+      summary: Create a bounty (authenticated)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BountyBody' }
+      responses:
+        '201': { description: Created, $ref: '#/components/schemas/Bounty' }
+        '401': { description: Missing/invalid token, $ref: '#/components/schemas/Error' }
+        '422': { description: Validation failed, $ref: '#/components/schemas/Error' }
+  /bounties/{id}:
+    get:
+      summary: Get one bounty
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Bounty, $ref: '#/components/schemas/Bounty' }
+        '404': { description: Not found, $ref: '#/components/schemas/Error' }
+    patch:
+      summary: Update a bounty (sponsor only; closed/cancelled is terminal)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BountyPatchBody' }
+      responses:
+        '200': { description: Updated bounty, $ref: '#/components/schemas/Bounty' }
+        '400': { description: Illegal status transition, $ref: '#/components/schemas/Error' }
+        '401': { description: Missing/invalid token, $ref: '#/components/schemas/Error' }
+        '403': { description: Not the sponsor, $ref: '#/components/schemas/Error' }
+        '404': { description: Not found, $ref: '#/components/schemas/Error' }
+        '422': { description: Validation failed, $ref: '#/components/schemas/Error' }
+    delete:
+      summary: Delete a bounty (sponsor only)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '204': { description: Deleted, no body }
+        '401': { description: Missing/invalid token, $ref: '#/components/schemas/Error' }
+        '403': { description: Not the sponsor, $ref: '#/components/schemas/Error' }
+        '404': { description: Not found, $ref: '#/components/schemas/Error' }
+  /bounties/{id}/applications:
+    post:
+      summary: Apply to a bounty (authenticated; not your own, not closed, once only)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ApplicationBody' }
+      responses:
+        '201': { description: Application created, $ref: '#/components/schemas/Application' }
+        '400': { description: Own bounty or bounty not open, $ref: '#/components/schemas/Error' }
+        '401': { description: Missing/invalid token, $ref: '#/components/schemas/Error' }
+        '404': { description: Bounty not found, $ref: '#/components/schemas/Error' }
+        '409': { description: Already applied, $ref: '#/components/schemas/Error' }
+        '422': { description: Validation failed, $ref: '#/components/schemas/Error' }
+    get:
+      summary: List applications for a bounty (sponsor only)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Applications, content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/Application' } } } } }
+        '401': { description: Missing/invalid token, $ref: '#/components/schemas/Error' }
+        '403': { description: Not the sponsor, $ref: '#/components/schemas/Error' }
+        '404': { description: Bounty not found, $ref: '#/components/schemas/Error' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: VALIDATION_ERROR }
+            message: { type: string }
+            details: { type: array, items: { type: object } }
+            requestId: { type: string, format: uuid }
+    RegisterBody:
+      type: object
+      required: [email, password, name]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8, maxLength: 128 }
+        name: { type: string, minLength: 1, maxLength: 100 }
+    LoginBody:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8, maxLength: 128 }
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id: { type: string }
+            email: { type: string }
+            name: { type: string }
+            createdAt: { type: string }
+        token: { type: string }
+    BountyBody:
+      type: object
+      required: [title, description, skill, rewardUsd]
+      properties:
+        title: { type: string, minLength: 5, maxLength: 120 }
+        description: { type: string, minLength: 20, maxLength: 5000 }
+        skill: { type: string, enum: [Javascript, Typescript, React, Svelte, Vue, Python, SolidJS, Rust, Go] }
+        rewardUsd: { type: integer, minimum: 1, maximum: 1000000 }
+    BountyPatchBody:
+      type: object
+      properties:
+        title: { type: string, minLength: 5, maxLength: 120 }
+        description: { type: string, minLength: 20, maxLength: 5000 }
+        skill: { type: string, enum: [Javascript, Typescript, React, Svelte, Vue, Python, SolidJS, Rust, Go] }
+        rewardUsd: { type: integer, minimum: 1, maximum: 1000000 }
+        status: { type: string, enum: [open, in_progress, closed, cancelled] }
+    Bounty:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        description: { type: string }
+        skill: { type: string }
+        rewardUsd: { type: integer }
+        status: { type: string, enum: [open, in_progress, closed, cancelled] }
+        sponsorId: { type: string }
+        createdAt: { type: string }
+        updatedAt: { type: string }
+    BountyPage:
+      type: object
+      properties:
+        data: { type: array, items: { $ref: '#/components/schemas/Bounty' } }
+        meta:
+          type: object
+          properties:
+            page: { type: integer }
+            pageSize: { type: integer }
+            total: { type: integer }
+            totalPages: { type: integer }
+    ApplicationBody:
+      type: object
+      required: [pitch]
+      properties:
+        pitch: { type: string, minLength: 20, maxLength: 2000 }
+    Application:
+      type: object
+      properties:
+        id: { type: string }
+        bountyId: { type: string }
+        applicantId: { type: string }
+        pitch: { type: string }
+        createdAt: { type: string }

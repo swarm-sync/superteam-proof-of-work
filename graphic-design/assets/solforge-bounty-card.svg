@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Solforge bounty card template">
+<title>Solforge bounty card template</title>
+<defs><linearGradient id="forge" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6D28D9"/><stop offset="1" stop-color="#4C1D95"/></linearGradient></defs>
+<rect x="0" y="0" width="1200" height="630" fill="url(#forge)"/>
+<circle cx="1080" cy="90" r="260" fill="#FFFFFF" opacity="0.08"/>
+<circle cx="1080" cy="90" r="180" fill="#FFFFFF" opacity="0.06"/>
+<g transform="translate(64,56) scale(0.9)"><rect x="8" y="8" width="104" height="104" rx="26" fill="url(#forge)" stroke="none"/><path d="M84 38 C84 28 72 22 60 22 C44 22 36 32 36 44 C36 60 84 56 84 74 C84 88 74 98 60 98 C48 98 38 92 36 82" fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><polygon points="96,8 106,18 96,28 86,18" fill="#00D9A6" stroke="none"/></g>
+<text x="64" y="300" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="72" fill="#FFFFFF">Build the fastest</text>
+<text x="64" y="384" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="72" fill="#FFFFFF">Solana test harness</text>
+<rect x="64" y="428" width="400" height="64" rx="32" fill="#FFB020"/>
+<text x="90" y="470" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="26" fill="#16132B">$500 USDC · BOUNTY</text>
+<text x="64" y="580" font-family="'Inter', sans-serif" font-size="24" fill="#E9E4FF">solforge.dev  ·  @solforge  ·  Superteam Earn</text>
+</svg>
