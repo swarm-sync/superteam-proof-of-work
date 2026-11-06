@@ -1,0 +1,11 @@
+id	title	category	status	reward_usd	deadline
+1	Fix the login redirect	Security	open	500	2026-12-01
+2	Write the onboarding guide	Docs	open	150	2026-11-20
+3	Redesign the bounty board	Design	closed	1200	2026-10-15
+4	Add rate limiting to the API	Backend	open	900	2026-11-30
+5	Audit the escrow contract	Security	draft	2500	2027-01-15
+6	Dark mode for the dashboard	Frontend	open	300	2026-12-10
+7	Translate the docs to Spanish	Docs	open	200	2026-12-05
+8	Load-test the submissions queue	DevOps	open	750	2026-11-25
+9	Reproduce the payout rounding bug	Backend	closed	400	2026-10-30
+10	Design the leaderboard empty state	Design	open	350	2026-12-18
